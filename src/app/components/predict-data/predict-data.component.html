@@ -1,0 +1,55 @@
+<app-loading #loading [message]="loadingMessage"></app-loading>
+<div class="bd-masthead mb-3" id="content">
+    <div class="container">
+        <div class="content-box">
+            <div class="glassmorphic-card">
+                <main class="form-predict-data w-100 m-auto">
+                    <form autocomplete="off">
+                        <h1 class="h3 mb-2 fw-normal">Predict Data</h1>
+                        <p>Download Sample dataset <a href="#"
+                                download="src/assets/dataset/Electric_Production.csv">here</a></p>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="predictionName" placeholder="name"
+                                        name="predictionName" [(ngModel)]="predictionName">
+                                    <label for="predictionName">Prediction Name</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="forecastCount"
+                                        placeholder="forecastCount" name="forecastCount" [(ngModel)]="forecastCount">
+                                    <label for="forecastCount">Forecast Count</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="periodicity" name="periodicity"
+                                        [(ngModel)]="periodicity">
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Daily">Daily</option>
+                                        <option value="Yearly">Yearly</option>
+                                    </select>
+                                    <label for="periodicity">Periodicity</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <input #fileInput class="form-control" name="dataset" type="file" id="formFile"
+                                        accept=".csv" (change)="getFile($event)">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button class="btn btn-lg btn-primary" id="predictData" type="button"
+                            (click)="predictData()">Submit</button>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>

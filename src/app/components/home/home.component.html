@@ -1,0 +1,90 @@
+<app-navbar [links]="links"></app-navbar>
+<div class="bd-masthead mb-3" id="content">
+    <div class="container">
+        <div class="row">
+            <h1 class="bd-title">Welcome</h1>
+            <p class="bd-lead">Refer the steps below</p>
+            <a href="home#steps">
+                <div class="arrow bounce">
+                    <i class="fa fa-arrow-down fa-2x" aria-hidden="true"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container my-5">
+    <section id="steps">
+        <div class="text-center mb-5">
+            <span>STEPS</span>
+            <h2 class="font-weight-bold display-4 ">How It <span style=" color: var(--bs-info)">Works?</span></h2>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="bg-body-tertiary position-relative px-3 my-5">
+                    <div class="font-weight-bold circle text-white rounded-circle d-flex align-items-center justify-content-center mx-auto position-relative border border-white"
+                        style="width: 60px;height: 60px;top: -30px;border: 4px solid var(--bs-info) !important; background-color: rgba(
+    var(--bs-dark-rgb),
+    1
+  ) !important">
+                        1
+                    </div>
+                    <div class="px-3 text-center pb-3">
+                        <h4>Upload a dataset</h4>
+                        <p class="font-weight-light my-3">Upload a dataset or use a dataset provided by us!<br>We
+                            support all datasets with two columns <b>Date</b> and <b>Value</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mx-auto">
+                <div class="bg-body-tertiary position-relative px-3 my-5">
+                    <div class="font-weight-bold circle text-white rounded-circle d-flex align-items-center justify-content-center mx-auto position-relative border border-white"
+                        style="width: 60px;height: 60px;top: -30px;border: 4px solid var(--bs-info) !important; background-color: rgba(
+    var(--bs-dark-rgb),
+    1
+  ) !important">
+                        2
+                    </div>
+                    <div class="px-3 text-center pb-3">
+                        <h4>Get Forecast Result</h4>
+                        <p class="font-weight-light my-3">We use SARIMAX Model to forecast the future values!<br>Also
+                            with <b>Mean Absolute Error</b> and <b>Mean Squared Error</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mx-auto">
+                <div class="bg-body-tertiary position-relative px-3 my-5">
+                    <div class="font-weight-bold circle text-white rounded-circle d-flex align-items-center justify-content-center mx-auto position-relative border border-white"
+                        style="width: 60px;height: 60px;top: -30px;border: 4px solid var(--bs-info) !important; background-color: rgba(
+    var(--bs-dark-rgb),
+    1
+  ) !important">
+                        3
+                    </div>
+                    <div class="px-3 text-center pb-3">
+                        <h4>Save the results</h4>
+                        <p class="font-weight-light my-3">If you are satisifed with our predictions, you can save if for
+                            future purposes!<br><br>Your data is safe with us !</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mx-auto">
+                <div class="bg-body-tertiary position-relative px-3 my-5">
+                    <div class="font-weight-bold circle text-white rounded-circle d-flex align-items-center justify-content-center mx-auto position-relative border border-white"
+                        style="width: 60px;height: 60px;top: -30px;border: 4px solid var(--bs-info) !important; background-color: rgba(
+    var(--bs-dark-rgb),
+    1
+  ) !important">
+                        4
+                    </div>
+                    <div class="px-3 text-center pb-3">
+                        <h4>Login!</h4>
+                        <p class="font-weight-light my-3">Curious How it Works?<br><b><a
+                                    routerLink="/login">Login</a></b>
+                            and find it out yourself!
+                        <p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

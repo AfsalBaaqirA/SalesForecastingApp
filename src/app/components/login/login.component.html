@@ -1,0 +1,113 @@
+<div class="video-bg">
+    <video width="320" height="240" autoplay loop muted>
+        <source src="assets/videos/bg_video.mp4" type="video/mp4">
+    </video>
+</div>
+<div class="container" *ngIf="signIn">
+    <div class="content-box">
+        <div class="glassmorphic-card">
+            <main class="form-signin w-100 m-auto">
+                <form autocomplete="off">
+                    <h1 class="h3 mb-2 fw-normal">Sign in</h1>
+                    <p>with your account</p>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" [(ngModel)]="username" id="floatingInput"
+                            placeholder="username" name="username">
+                        <label for="floatingInput">Username</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="floatingPassword" [type]="hide ? 'password' : 'text'"
+                            placeholder="Enter Password" [(ngModel)]="password" name="password">
+                        <button class="no_style" mat-icon-button matSuffix (click)="hide = !hide"
+                            [attr.aria-label]="'Hide password'" [attr.atria-pressed]="hide">
+                            <i class="fa fa-eye" id="togglePassword" style="cursor: pointer"></i>
+                        </button>
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                    <button class="w-100 btn btn-lg btn-primary" id="signin" type="button" (click)="login()">Sign
+                        in</button>
+                    <div class="d-flex mt-3 footer">
+                        <p class="footer-text">Don't have an account?</p>
+                        <button class="btn py-0" (click)="signIn = !signIn">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="!signIn">
+    <div class="content-box">
+        <div class="glassmorphic-card">
+            <main class="form-signup w-100 m-auto">
+                <form autocomplete="off">
+                    <h1 class="h3 mb-2 fw-normal">Sign Up</h1>
+                    <p>Create your account</p>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" [(ngModel)]="name" id="name" placeholder="name"
+                                    name="name">
+                                <label for="name">Name</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" [(ngModel)]="mailId" id="email"
+                                    placeholder="email" name="mail">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" [(ngModel)]="username" id="username"
+                                    placeholder="username" name="username">
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" [(ngModel)]="phoneNo" id="floatingInput"
+                                    placeholder="phone" name="phoneNo">
+                                <label for="floatingInput">Phone</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="password" [type]="hide ? 'password' : 'text'"
+                                    placeholder="Enter Password" [(ngModel)]="password" name="password">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="rePassword" [type]="hide ? 'password' : 'text'"
+                                    placeholder="Enter Password" [(ngModel)]="rePassword" name="rePassword">
+                                <label for="rePassword">Confirm Password</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-100 btn btn-lg btn-primary" id="signup" type="button" (click)="signUp()">Sign
+                        Up</button>
+                    <div class="d-flex mt-3 footer">
+                        <p class="footer-text">Already have an account?</p>
+                        <button class="btn py-0" (click)="signIn = !signIn">
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+</div>
+<a href="/home" class="btn btn-secondary btn-circle float-right d-flex align-items-center justify-content-center"
+    style="position: fixed; bottom: 20px; left: 20px; margin: -10px; background: rgba(16, 18, 27, 0.6); backdrop-filter: blur(20px); width: 50px; height: 50px; border-radius: 100%; border-width: 0;">
+    <span class="bi bi-house-door-fill" style="font-size: 25px; line-height: 30px;"></span>
+</a>
+<div toastContainer></div>
