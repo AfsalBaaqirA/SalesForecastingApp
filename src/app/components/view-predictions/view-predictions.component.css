@@ -1,0 +1,12 @@
+.table-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 80px;
+    border: 1px solid #ccc;
+}

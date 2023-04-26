@@ -37,9 +37,10 @@ export class PredictDataComponent {
 
     let options = { headers: headers };
 
-    this.http.post('http://192.168.1.96:5000/api/getPrediction/' + localStorage.getItem('sessionToken'), formData, options).subscribe(
+    this.http.post('http://192.168.1.96:5000/api/predict-data/' + localStorage.getItem('sessionToken'), formData, options).subscribe(
       (data: any) => {
         console.log(data);
+        this.loading.hideLoading();
         this.router.navigate(['/view-predictions']);
       }
     );

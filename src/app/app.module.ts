@@ -17,9 +17,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PredictDataComponent } from './components/predict-data/predict-data.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { SavedPredictionsComponent } from './components/saved-predictions/saved-predictions.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { ViewPredictionsComponent } from './components/view-predictions/view-predictions.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,6 @@ import { ViewPredictionsComponent } from './components/view-predictions/view-pre
     DashboardComponent,
     PredictDataComponent,
     PageNotFoundComponent,
-    SavedPredictionsComponent,
     LogoutComponent,
     ViewPredictionsComponent,
   ],
@@ -50,6 +49,7 @@ import { ViewPredictionsComponent } from './components/view-predictions/view-pre
       easeTime: 200
     }),
     ToastContainerModule,
+    NgChartsModule,
     AppRoutingModule,
     MatInputModule,
     MatIconModule,
@@ -63,7 +63,7 @@ import { ViewPredictionsComponent } from './components/view-predictions/view-pre
 })
 export class AppModule {
   constructor() {
-    if ( localStorage.getItem('sessionToken') == null ) {
+    if (localStorage.getItem('sessionToken') == null) {
       localStorage.setItem('isLoggedIn', 'false');
     }
     else {

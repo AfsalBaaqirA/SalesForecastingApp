@@ -10,7 +10,7 @@ import pandas as pd
 import warnings
 from pmdarima import auto_arima
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 load_dotenv()
 
@@ -108,36 +108,61 @@ def api_endpoints(app):
         response = jsonify({'status': status, 'sessionToken': token})
         return response
 
-    @app.route('/api/getSavedPredictions/', methods=['POST'])
-    def getPredictionResults(email):#change
+    @app.route('/api/getPredictions/<sessionToken>', methods=['GET'])
+    def getPredictions(sessionToken):
         try:
             query = {
-                'email': email,
+                'sessionToken': sessionToken
             }
-            account = accounts.find_one(query)
-            predictions = account['predictionsArray']
-            status = {
-                'status': '200',
-                'message': 'Data retrieved successfully'
-            }
+            session = sessions.find_one(query)
+            if session:
+                username = session['username']
+                query = {
+                    'username': username
+                }
+                account = accounts.find_one(query)
+                if account:
+                    predictions = account['predictionsArray']
+                    status = {
+                        'status': '200',
+                        'message': 'Success'
+                    }
+                    response = jsonify(
+                        {'status': status, 'predictions': predictions})
+                    return response
         except Exception as e:
             status = {
                 'status': '400',
                 'message': str(e)
             }
-        response = jsonify({'data': [predictions], 'status': status})
+        response = jsonify({'status': status})
         return response
+    
     
     @app.route('/api/deletePrediction/<sessionToken>', methods=['POST'])
     def deletePrediction(sessionToken):#change
         try:
             data = request.get_json()
+            predictionId = data.get('predictionId')
             query = {
-                'email': email,
+                'sessionToken': sessionToken
             }
-            account = accounts.find_one(query)
-            prediction = data['prediction']
-            account['predictionsArray'].remove(prediction)
+            session = sessions.find_one(query)
+            if session:
+                username = session['username']
+                query = {
+                    'username': username
+                }
+                account = accounts.find_one(query)
+                if account:
+                    predictions = account['predictionsArray']
+                    for prediction in predictions:
+                        if prediction['predictionId'] == predictionId:
+                            predictions.remove(prediction)
+                            break
+                    accounts.update_one(
+                        query, {'$set': {'predictionsArray': predictions}})
+                    
             status = {
                 'status': '200',
                 'message': 'Deleted successfully'
@@ -147,11 +172,11 @@ def api_endpoints(app):
                 'status': '400',
                 'message': str(e)
             }
-        response = jsonify({'data': [prediction], 'status': status})
+        response = jsonify({'status': status})
         return response
 
-    @app.route('/api/getPrediction/<sessionToken>', methods=['POST'])
-    def getPrediction(sessionToken):
+    @app.route('/api/predict-data/<sessionToken>', methods=['POST'])
+    def predictData(sessionToken):
         response_data = None
         status = None
         try:
@@ -163,7 +188,7 @@ def api_endpoints(app):
             if file:
                 file.save('uploads/'+file.filename)
                 filepath = 'D:/Projects/SalesForecastingApp/flask_server/uploads/'+file.filename
-                data = pd.read_csv(filepath, index_col=0, parse_dates=True)
+                data = pd.read_csv(filepath, index_col = 0, parse_dates = True)
 
                 warnings.filterwarnings("ignore")
 
@@ -176,7 +201,7 @@ def api_endpoints(app):
                 elif periodicity == 'Monthly':
                     m = 12
                 elif periodicity == 'Yearly':
-                    m = 365
+                    m = 1
 
                 # Fit auto_arima function to the dataset
                 stepwise_fit = auto_arima(data.iloc[:, 0],
@@ -218,27 +243,30 @@ def api_endpoints(app):
                                 seasonal_order=stepwise_fit.seasonal_order)
                 result = model.fit()
 
-                # Forecast for the next 3 years
+                # Forecast for the next n years
                 forecast = result.predict(start=len(data),
                                         end=len(data) + forecastCount * m,
                                         typ='levels').rename('Forecast')
                 
                 forecast_df = forecast.to_frame()
                 forecast_df.reset_index(level=0, inplace=True)
-                forecast_df.columns = ['PredictionDate', 'PredictedValue']
-                forecast_df['PredictionDate'] = forecast_df['PredictionDate'].dt.strftime('%Y-%m-%d')
+                forecast_df.columns = ['PredictedDate', 'PredictedValue']
+                print(data)
+                print(forecast_df)
+                forecast_df['PredictedDate'] = pd.to_datetime(forecast_df['PredictedDate']).dt.strftime('%Y-%m-%d')
                 list1 = forecast_df.to_dict('records')
 
                 data.reset_index(level=0, inplace=True)
                 data.columns = ['Date', 'Value']
-                data['Date'] = data['Date'].dt.strftime('%Y-%m-%d')
+                print(data)
+                data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
                 list2 = data.to_dict('records')
 
-                predictionDate = []
+                predictedDate = []
                 predictedValue = []
 
                 for d in list1:
-                    predictionDate.append(d["PredictionDate"])
+                    predictedDate.append(d["PredictedDate"])
                     predictedValue.append(d["PredictedValue"])
                 
                 date = []
@@ -249,10 +277,11 @@ def api_endpoints(app):
                     value.append(d["Value"])
 
                 response_data = {
+                    'predictionId': uuid.uuid4().hex,
                     'predictionName': predictionName,
                     'date': date,
                     'value': value,
-                    'predictionDate': predictionDate,
+                    'predictedDate': predictedDate,
                     'predictedValue': predictedValue,
                     'rmse': rmse_val,
                     'mae': mae_val,
@@ -262,11 +291,9 @@ def api_endpoints(app):
                 query = {
                     'sessionToken': sessionToken,
                 }
-                print(sessionToken)
                 session = sessions.find_one(query)
                 if session:
                     username = session['username']
-                    print(username)
                     query = {
                         'username': username,
                     }
@@ -275,7 +302,6 @@ def api_endpoints(app):
                         predictionsArray = account['predictionsArray']
                         predictionsArray.append(response_data)
                         account['predictionsArray'] = predictionsArray
-                        print(account)
                         accounts.update_one(query, {'$set': account})
                     
                 status = {

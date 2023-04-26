@@ -1,1 +1,45 @@
-<p>view-predictions works!</p>
+<app-navbar [links]="links"></app-navbar>
+<div class="table-container" *ngIf="!viewData">
+    <table class="table table-hover">
+        <caption class="text-end">{{predictionCount}} out of 10 Predictions Used</caption>
+        <thead>
+            <tr>
+                <th class="text-center">#</th>
+                <th class="text-center">Prediction Name</th>
+                <th class="text-center">MAE</th>
+                <th class="text-center">RMSE</th>
+                <th class="text-center">MSE</th>
+                <th class="text-center">Options</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr *ngFor="let prediction of predictions; let i = index">
+                <td class="align-middle text-center">{{i + 1}}</td>
+                <td class="align-middle text-center">{{prediction.predictionName}}</td>
+                <td class="align-middle text-center">{{prediction.mae}}</td>
+                <td class="align-middle text-center">{{prediction.rmse}}</td>
+                <td class="align-middle text-center">{{prediction.mse}}</td>
+                <td class="align-middle text-center"><button class="btn btn-outline-info"
+                        (click)="showPredictDetails(prediction.predictionId)">View</button>&nbsp;&nbsp;&nbsp;<button
+                        class="btn btn-outline-danger"
+                        (click)="deletePrediction(prediction.predictionId)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="table-container" *ngIf="viewData">
+    <div class="card text-center">
+        <div class="card-header d-flex justify-content-between">
+            <p class="mb-0">{{prediction.predictionName}}</p>
+            <div class="flex-end">
+                <button class="btn btn-outline-secondary" (click)="viewData = !viewData">Close</button>
+            </div>
+        </div>
+        <div class="card-body text-start">
+            <p class="card-text"><b>RMSE: </b>{{prediction.rmse}}</p>
+            <p class="card-text"><b>MSE: </b>{{prediction.mse}}</p>
+            <p class="card-text"><b>MAE: </b>{{prediction.mae}}</p>
+            <div id="chartContainer" style="height: 100%; width: 100%;">
+                <canvas baseChart type="line" [data]="chartData" [options]="chartOptions"></canvas>
+            </div>
+        </div>

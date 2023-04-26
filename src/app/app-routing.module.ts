@@ -7,7 +7,6 @@ import { LoginGuard } from './guards/login.guard';
 import { AuthService } from './services/auth.service';
 import { PredictDataComponent } from './components/predict-data/predict-data.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { SavedPredictionsComponent } from './components/saved-predictions/saved-predictions.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { ViewPredictionsComponent } from './components/view-predictions/view-predictions.component';
 
@@ -26,9 +25,6 @@ const routes: Routes = [
   },
   {
     path: 'predict-data', component: PredictDataComponent, canActivate: [LoginGuard]
-  },
-  {
-    path: 'saved-predictions', component: SavedPredictionsComponent, canActivate: [LoginGuard]
   },
   {
     path: 'logout', component: LogoutComponent
